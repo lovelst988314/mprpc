@@ -1,8 +1,8 @@
-syntax = "proto3"; // 声明了protobuf的版本
+syntax = "proto3"; // 声明protobuf版本
 
-package fixbug; // 声明了代码所在的包（对于C++来说是namespace）
+package fixbug;
 
-// 定义下面的选项，表示生成service服务类和rpc方法描述，默认不生成
+//表示生成service服务类和rpc方法描述  默认不生成
 option cc_generic_services = true;
 
 message ResultCode
@@ -11,22 +11,24 @@ message ResultCode
     bytes errmsg = 2;
 }
 
-// 数据   列表   映射表
-// 定义登录请求消息类型  name   pwd
+// 存储一般数据类型 数据  列表  映射表
+//登入请求的消息类型 name pwd
 message LoginRequest
 {
     bytes name = 1;
     bytes pwd = 2;
+    map<int32, int32> test = 3;
 }
+//字符串一般都是定义为 bytes 类型
 
-// 定义登录响应消息类型
+//定义登入响应的消息类型
 message LoginResponse
 {
     ResultCode result = 1;
-    bool success = 2;
+    bool sucess = 3;
 }
 
-message GetFriendListsRequest
+message GETFriendListRequest
 {
     uint32 userid = 1;
 }
@@ -37,21 +39,25 @@ message User
     uint32 age = 2;
     enum Sex
     {
-        MAN = 0;
-        WOMAN = 1;
+        FEMALE = 0;
+        MALE = 1;
     }
     Sex sex = 3;
 }
 
-message GetFriendListsResponse
+message GETFriendListResponse
 {
     ResultCode result = 1;
-    repeated User friend_list = 2;  // 定义了一个列表类型
+    repeated User friends_list = 2;
 }
 
-// 在protobuf里面怎么定义描述rpc方法的类型 - service
+
+
+// protobuf 来解决数据的 序列化 和 反序列化
+
+// 在protobuf 中， 怎么定义描述rpc方法的类型 -service
 service UserServiceRpc
 {
     rpc Login(LoginRequest) returns(LoginResponse);
-    rpc GetFriendLists(GetFriendListsRequest) returns(GetFriendListsResponse);
+    rpc GetFriendList(GETFriendListRequest) returns(GETFriendListResponse);
 }
