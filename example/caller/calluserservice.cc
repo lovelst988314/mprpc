@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 
     // 演示调用远程发布的rpc方法Login
     fixbug::UserServiceRpc_Stub stub(new MprpcChannel());
+    
     // rpc方法的请求参数
     fixbug::LoginRequest request;
     request.set_name("zhang san");

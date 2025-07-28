@@ -9,12 +9,14 @@ class MprpcApplication
 {
 public:
     static void Init(int argc, char **argv);
-    static MprpcApplication& GetInstance();
+    static MprpcApplication& GetInstance();  //获取实例的方法
     static MprpcConfig& GetConfig();
 private:
-    static MprpcConfig m_config;
+    static MprpcConfig m_config;  // 静态方法中只能调用静态变量
 
     MprpcApplication(){}
     MprpcApplication(const MprpcApplication&) = delete;
     MprpcApplication(MprpcApplication&&) = delete;
 };
+
+//单例模式的设计

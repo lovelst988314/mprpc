@@ -5,7 +5,7 @@
 
 MprpcConfig MprpcApplication::m_config;
 
-void ShowArgsHelp()
+void ShowArgsHelp()  //展示错误信息
 {
     std::cout<<"format: command -i <configfile>" << std::endl;
 }
@@ -14,12 +14,13 @@ void MprpcApplication::Init(int argc, char **argv)
 {
     if (argc < 2)
     {
-        ShowArgsHelp();
-        exit(EXIT_FAILURE);
+        ShowArgsHelp();  //错误后调用的函数
+        exit(EXIT_FAILURE); 
     }
+    //  检查命令行参数数量，至少需要2个参数（程序名 + 配置文件参数）
 
     int c = 0;
-    std::string config_file;
+    std::string config_file;  //有配置文件了
     while((c = getopt(argc, argv, "i:")) != -1)
     {
         switch (c)
@@ -39,7 +40,7 @@ void MprpcApplication::Init(int argc, char **argv)
     }
 
     // 开始加载配置文件了 rpcserver_ip=  rpcserver_port   zookeeper_ip=  zookepper_port=
-    m_config.LoadConfigFile(config_file.c_str());
+    m_config.LoadConfigFile(config_file.c_str()); 
 
     // std::cout << "rpcserverip:" << m_config.Load("rpcserverip") << std::endl;
     // std::cout << "rpcserverport:" << m_config.Load("rpcserverport") << std::endl;

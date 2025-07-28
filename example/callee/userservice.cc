@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "user.pb.h"
+#include "user.pb.h"  // 要对虚函数来进行重写
 #include "mprpcapplication.h"
 #include "rpcprovider.h"
 
@@ -21,6 +21,7 @@ public:
     {
         std::cout << "doing local service: Register" << std::endl;
         std::cout << "id:" << id << "name:" << name << " pwd:" << pwd << std::endl;
+        // 代表是一个业务
         return true;
     }
 
@@ -84,3 +85,5 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
+// 把本地服务发布成一个rpc服务

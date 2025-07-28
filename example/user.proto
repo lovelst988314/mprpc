@@ -19,7 +19,7 @@ message LoginRequest
 message LoginResponse
 {
     ResultCode result = 1;
-    bool sucess = 2;
+    bool sucess = 2;   //登入是否成功
 }
 
 message RegisterRequest
