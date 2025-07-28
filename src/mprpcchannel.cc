@@ -12,7 +12,7 @@
 #include "zookeeperutil.h"
 
 /*
-header_size + service_name method_name args_size + args
+header_size + service_name method_name args_size + args  
 */
 // 所有通过stub代理对象调用的rpc方法，都走到这里了，统一做rpc方法调用的数据数据序列化和网络发送 
 void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
@@ -21,13 +21,13 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                                 google::protobuf::Message* response,
                                 google::protobuf:: Closure* done)
 {
-    const google::protobuf::ServiceDescriptor* sd = method->service();
+    const google::protobuf::ServiceDescriptor* sd = method->service();  //  这个方法对应的服务对象
     std::string service_name = sd->name(); // service_name
     std::string method_name = method->name(); // method_name
 
     // 获取参数的序列化字符串长度 args_size
     uint32_t args_size = 0;
-    std::string args_str;
+    std::string args_str;  // 用于存放request序列化的字符串
     if (request->SerializeToString(&args_str))
     {
         args_size = args_str.size();
@@ -156,3 +156,7 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
 
     close(clientfd);
 }
+
+
+// 序列化 对象 → 序列化 → 字节流 → 网络传输
+// 接收方: 字节流 → 反序列化 → 对象 → 业务处理
