@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/mprpcapplication.cc.o -c /home/mqw/Desktop/mprpc/src/mprpcapplication.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/mprpcapplication.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/mprpcconfig.cc.o -c /home/mqw/Desktop/mprpc/src/mprpcconfig.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/mprpcconfig.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/rpcheader.pb.cc.o -c /home/mqw/Desktop/mprpc/src/rpcheader.pb.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/rpcheader.pb.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/rpcprovider.cc.o -c /home/mqw/Desktop/mprpc/src/rpcprovider.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/rpcprovider.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/mprpcchannel.cc.o -c /home/mqw/Desktop/mprpc/src/mprpcchannel.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/mprpcchannel.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/mprpccontroller.cc.o -c /home/mqw/Desktop/mprpc/src/mprpccontroller.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/mprpccontroller.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/logger.cc.o -c /home/mqw/Desktop/mprpc/src/logger.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/logger.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o src/CMakeFiles/mprpc.dir/zookeeperutil.cc.o -c /home/mqw/Desktop/mprpc/src/zookeeperutil.cc",
+  "file": "/home/mqw/Desktop/mprpc/src/zookeeperutil.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o example/callee/CMakeFiles/provider.dir/friendservice.cc.o -c /home/mqw/Desktop/mprpc/example/callee/friendservice.cc",
+  "file": "/home/mqw/Desktop/mprpc/example/callee/friendservice.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o example/callee/CMakeFiles/provider.dir/__/friend.pb.cc.o -c /home/mqw/Desktop/mprpc/example/friend.pb.cc",
+  "file": "/home/mqw/Desktop/mprpc/example/friend.pb.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o example/caller/CMakeFiles/consumer.dir/callfriendservice.cc.o -c /home/mqw/Desktop/mprpc/example/caller/callfriendservice.cc",
+  "file": "/home/mqw/Desktop/mprpc/example/caller/callfriendservice.cc"
+},
+{
+  "directory": "/home/mqw/Desktop/mprpc/build",
+  "command": "/usr/bin/g++ -I/home/mqw/Desktop/mprpc/src/include -I/home/mqw/Desktop/mprpc/example -g -o example/caller/CMakeFiles/consumer.dir/__/friend.pb.cc.o -c /home/mqw/Desktop/mprpc/example/friend.pb.cc",
+  "file": "/home/mqw/Desktop/mprpc/example/friend.pb.cc"
+}
+]

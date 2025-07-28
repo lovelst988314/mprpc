@@ -14,9 +14,11 @@ int main(int argc, char **argv)
     request.set_userid(1000);
     // rpc方法的响应
     fixbug::GetFriendsListResponse response;
+
     // 发起rpc方法的调用  同步的rpc调用过程  MprpcChannel::callmethod
     MprpcController controller;
     stub.GetFriendsList(&controller, &request, &response, nullptr); // RpcChannel->RpcChannel::callMethod 集中来做所有rpc方法调用的参数序列化和网络发送
+    // 第一个参数是存储状态信息， 失败后的状态信息
 
     // 一次rpc调用完成，读调用的结果
     if (controller.Failed())

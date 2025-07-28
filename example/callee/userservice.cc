@@ -30,7 +30,7 @@ public:
     1. caller   ===>   Login(LoginRequest)  => muduo =>   callee 
     2. callee   ===>    Login(LoginRequest)  => 交到下面重写的这个Login方法上了
     */
-    void Login(::google::protobuf::RpcController* controller,
+    void Login(::google::protobuf::RpcController* controller,   
                        const ::fixbug::LoginRequest* request,
                        ::fixbug::LoginResponse* response,
                        ::google::protobuf::Closure* done)
@@ -45,7 +45,7 @@ public:
         // 把响应写入  包括错误码、错误消息、返回值
         fixbug::ResultCode *code = response->mutable_result();
         code->set_errcode(0);
-        code->set_errmsg("");
+        code->set_errmsg("login do wrong");
         response->set_sucess(login_result);
 
         // 执行回调操作   执行响应对象数据的序列化和网络发送（都是由框架来完成的）

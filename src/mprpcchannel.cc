@@ -70,12 +70,13 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     std::cout << "method_name: " << method_name << std::endl; 
     std::cout << "args_str: " << args_str << std::endl; 
     std::cout << "============================================" << std::endl;
+    // rpc服务的发起端口
 
     // 使用tcp编程，完成rpc方法的远程调用
     int clientfd = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == clientfd)
     {
-        char errtxt[512] = {0};
+        char errtxt[1051] = {0};
         sprintf(errtxt, "create socket error! errno:%d", errno);
         controller->SetFailed(errtxt);
         return;
@@ -143,12 +144,14 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     }
 
     // 反序列化rpc调用的响应数据
-    // std::string response_str(recv_buf, 0, recv_size); // bug出现问题，recv_buf中遇到\0后面的数据就存不下来了，导致反序列化失败
+    // std::string response_str(recv_buf, 0, recv_size); 
+    // bug出现问题，recv_buf中遇到\0后面的数据就存不下来了，导致反序列化失败
     // if (!response->ParseFromString(response_str))
-    if (!response->ParseFromArray(recv_buf, recv_size))
+    if (!response->ParseFromArray(recv_buf, recv_size))  //反序列化失败
     {
         close(clientfd);
-        char errtxt[512] = {0};
+        char errtxt[1051] = {0};
+        // snprintf(errtxt, sizeof(errtxt), "parse error! response_str:%s", recv_buf);
         sprintf(errtxt, "parse error! response_str:%s", recv_buf);
         controller->SetFailed(errtxt);
         return;

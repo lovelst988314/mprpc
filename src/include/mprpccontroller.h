@@ -16,6 +16,6 @@ public:
     bool IsCanceled() const;
     void NotifyOnCancel(google::protobuf::Closure* callback);
 private:
-    bool m_failed; // RPC方法执行过程中的状态
+    bool m_failed; // RPC方法执行过程中的状态   true表示方法执行失败 
     std::string m_errText; // RPC方法执行过程中的错误信息
 };

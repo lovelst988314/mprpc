@@ -31,8 +31,9 @@ public:
         response->mutable_result()->set_errmsg("");
         for (std::string &name : friendsList)
         {
-            std::string *p = response->add_friends();
+            std::string *p = response->add_friends();  //将friendsList 中的数据填到 response 中
             *p = name;
+            // response->add_friends(name);
         }
         done->Run();
     }
@@ -55,3 +56,5 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
+
