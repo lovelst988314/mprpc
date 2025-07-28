@@ -26,8 +26,8 @@
 // 定义日志级别
 enum LogLevel
 {
-    INFO,  // 普通信息
-    ERROR, // 错误信息
+    INFO,   // 普通信息
+    ERROR,  // 错误信息
 };
 
 // Mprpc框架提供的日志系统
@@ -42,6 +42,7 @@ public:
     void Log(std::string msg);
 private:
     int m_loglevel; // 记录日志级别
+    
     LockQueue<std::string>  m_lckQue; // 日志缓冲队列
 
     Logger();

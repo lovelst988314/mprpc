@@ -1,10 +1,10 @@
 #pragma once
 #include <queue>
 #include <thread>
-#include <mutex> // pthread_mutex_t
-#include <condition_variable> // pthread_condition_t
+#include <mutex> // pthread_mutex_t 互斥锁
+#include <condition_variable> // pthread_condition_t  信号量
 
-// 异步写日志的日志队列
+// 异步写日志的日志队列  要保证线程安全
 template<typename T>
 class LockQueue
 {
@@ -36,3 +36,4 @@ private:
     std::mutex m_mutex;
     std::condition_variable m_condvariable;
 };
+
