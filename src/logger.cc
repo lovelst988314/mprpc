@@ -16,8 +16,12 @@ Logger::Logger()
         for (;;)
         {
             // 获取当前的日期，然后取日志信息，写入相应的日志文件当中 a+
+
             time_t now = time(nullptr);
+            // time(nullptr)：调用标准库函数 time 获取当前系统时间  
+            // 返回值是 time_t 类型，表示从 Unix 纪元（1970年1月1日）开始经过的秒数
             tm *nowtm = localtime(&now);
+            // localtime(&now)：将 time_t 格式的时间转换为本地时间的结构体表示
 
             char file_name[128];
             sprintf(file_name, "%d-%d-%d-log.txt", nowtm->tm_year+1900, nowtm->tm_mon+1, nowtm->tm_mday);
@@ -37,13 +41,14 @@ Logger::Logger()
                     nowtm->tm_min, 
                     nowtm->tm_sec,
                     (m_loglevel == INFO ? "info" : "error"));
-            msg.insert(0, time_buf);
+            msg.insert(0, time_buf);  //时分秒和日志信息拼接
             msg.append("\n");
 
             fputs(msg.c_str(), pf);
             fclose(pf);
         }
     });
+
     // 设置分离线程，守护线程
     writeLogTask.detach();
 }

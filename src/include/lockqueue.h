@@ -14,7 +14,7 @@ public:
     {
         std::lock_guard<std::mutex> lock(m_mutex);
         m_queue.push(data);
-        m_condvariable.notify_one();
+        m_condvariable.notify_one(); // 唤醒一个wait线程
     }
 
     // 一个线程读日志queue，写日志文件
@@ -24,7 +24,7 @@ public:
         while (m_queue.empty())
         {
             // 日志队列为空，线程进入wait状态
-            m_condvariable.wait(lock);
+            m_condvariable.wait(lock);  //释放拿到的锁， 然后等待唤醒
         }
 
         T data = m_queue.front();

@@ -20,3 +20,5 @@ private:
     // zk的客户端句柄
     zhandle_t *m_zhandle;
 };
+
+// zk的数据是怎么组织的  znode节点   zk的watcher机制
