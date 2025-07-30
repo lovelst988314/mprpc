@@ -3,7 +3,7 @@
 #include <semaphore.h>
 #include <iostream>
 
-// 全局的watcher观察器   zkserver给zkclient的通知
+// 全局的watcher观察器   zkserver给zkclient的通知  是一个和start分开的线程
 void global_watcher(zhandle_t *zh, int type,
                    int state, const char *path, void *watcherCtx)
 {
@@ -11,7 +11,7 @@ void global_watcher(zhandle_t *zh, int type,
 	{
 		if (state == ZOO_CONNECTED_STATE)  // zkclient和zkserver连接成功
 		{
-			sem_t *sem = (sem_t*)zoo_get_context(zh);
+			sem_t *sem = (sem_t*)zoo_get_context(zh);  // 从指定的句柄中获取信号量
             sem_post(sem);
 		}
 	}
@@ -52,7 +52,7 @@ void ZkClient::Start()
 
     sem_t sem;
     sem_init(&sem, 0, 0);
-    zoo_set_context(m_zhandle, &sem);
+    zoo_set_context(m_zhandle, &sem);  //为句柄添加额外信息
 
     sem_wait(&sem);
     std::cout << "zookeeper_init success!" << std::endl;
@@ -69,7 +69,7 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
 	{
 		// 创建指定path的znode节点了
 		flag = zoo_create(m_zhandle, path, data, datalen,
-			&ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
+			&ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);  // 与权限相关使用默认值 &ZOO_OPEN_ACL_UNSAFE
 		if (flag == ZOK)
 		{
 			std::cout << "znode create success... path:" << path << std::endl;

@@ -548,16 +548,16 @@ class GetFriendsListResponse PROTOBUF_FINAL :
 };
 // ===================================================================
 
-class FiendServiceRpc_Stub;
+class FriendServiceRpc_Stub;
 
-class FiendServiceRpc : public ::PROTOBUF_NAMESPACE_ID::Service {
+class FriendServiceRpc : public ::PROTOBUF_NAMESPACE_ID::Service {
  protected:
   // This class should be treated as an abstract interface.
-  inline FiendServiceRpc() {};
+  inline FriendServiceRpc() {};
  public:
-  virtual ~FiendServiceRpc();
+  virtual ~FriendServiceRpc();
 
-  typedef FiendServiceRpc_Stub Stub;
+  typedef FriendServiceRpc_Stub Stub;
 
   static const ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor* descriptor();
 
@@ -580,19 +580,19 @@ class FiendServiceRpc : public ::PROTOBUF_NAMESPACE_ID::Service {
     const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor* method) const;
 
  private:
-  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(FiendServiceRpc);
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(FriendServiceRpc);
 };
 
-class FiendServiceRpc_Stub : public FiendServiceRpc {
+class FriendServiceRpc_Stub : public FriendServiceRpc {
  public:
-  FiendServiceRpc_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel);
-  FiendServiceRpc_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel,
+  FriendServiceRpc_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel);
+  FriendServiceRpc_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel,
                    ::PROTOBUF_NAMESPACE_ID::Service::ChannelOwnership ownership);
-  ~FiendServiceRpc_Stub();
+  ~FriendServiceRpc_Stub();
 
   inline ::PROTOBUF_NAMESPACE_ID::RpcChannel* channel() { return channel_; }
 
-  // implements FiendServiceRpc ------------------------------------------
+  // implements FriendServiceRpc ------------------------------------------
 
   void GetFriendsList(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
                        const ::fixbug::GetFriendsListRequest* request,
@@ -601,7 +601,7 @@ class FiendServiceRpc_Stub : public FiendServiceRpc {
  private:
   ::PROTOBUF_NAMESPACE_ID::RpcChannel* channel_;
   bool owns_channel_;
-  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(FiendServiceRpc_Stub);
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(FriendServiceRpc_Stub);
 };
 
 
