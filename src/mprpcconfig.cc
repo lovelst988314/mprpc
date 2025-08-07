@@ -6,7 +6,7 @@
 // 负责解析加载配置文件
 void MprpcConfig::LoadConfigFile(const char *config_file)
 {
-    FILE *pf = fopen(config_file, "r");  //读打开文件 
+    FILE *pf = fopen(config_file, "r");  //读打开文件  文件名打开模式 
     if (nullptr == pf)
     {
         std::cout << config_file << " is note exist!" << std::endl;  //文件不存在
@@ -17,17 +17,17 @@ void MprpcConfig::LoadConfigFile(const char *config_file)
     while(!feof(pf))  // 检查文件流是否已到达文件末尾（End Of File）
     {
         char buf[512] = {0};
-        fgets(buf, 512, pf);  //从 pf 向 buf 读取
+        fgets(buf, 512, pf);  //从 pf 向 buf 读取一行
 
         // 去掉字符串前面多余的空格
         std::string read_buf(buf);
-        Trim(read_buf);  //去掉字符串前后的空格
+        Trim(read_buf); 
 
         // 判断#的注释
         if (read_buf[0] == '#' || read_buf.empty())
         {
             continue;
-        }
+        }  //空行 #开头跳过
 
         // 解析配置项
         int idx = read_buf.find('=');

@@ -1,15 +1,17 @@
-syntax = "proto3"; // 声明protobuf版本
+syntax = "proto3";    // 声明protobuf版本
 
-package fixbug;
+package fixbug;  // 命名空间
 
 //表示生成service服务类和rpc方法描述  默认不生成
 option cc_generic_services = true;
 
 message ResultCode
 {
-    int32 errcode = 1;
+    int32 errcode = 1;  // 编号 
     bytes errmsg = 2;
 }
+
+// required int 表示必填字段  optional 可选字段  repeated 表示列表 类似c++中的数组
 
 // 存储一般数据类型 数据  列表  映射表
 //登入请求的消息类型 name pwd
@@ -61,3 +63,8 @@ service UserServiceRpc
     rpc Login(LoginRequest) returns(LoginResponse);
     rpc GetFriendList(GETFriendListRequest) returns(GETFriendListResponse);
 }
+
+// 类似c++的结构体
+// protobuf中没有rpc相关的任何实现  只能进行一个描述 然后来实现rpc的序列化和反序列化
+// stud中调用的方法都是调用的channel的callmethod方法 
+// channel.callmethod  是一个存虚类 要重写一个一个callmethod方法

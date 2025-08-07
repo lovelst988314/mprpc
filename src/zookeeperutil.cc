@@ -12,7 +12,7 @@ void global_watcher(zhandle_t *zh, int type,
 		if (state == ZOO_CONNECTED_STATE)  // zkclient和zkserver连接成功
 		{
 			sem_t *sem = (sem_t*)zoo_get_context(zh);  // 从指定的句柄中获取信号量
-            sem_post(sem);
+            sem_post(sem);  // 代表连接成功
 		}
 	}
 }
@@ -41,8 +41,10 @@ void ZkClient::Start()
 	zookeeper的API客户端程序提供了三个线程
 	API调用线程 
 	网络I/O线程  pthread_create  poll
+
 	watcher回调线程 pthread_create
 	*/
+	// 第一个参数ip:port  回调函数  超时时间
     m_zhandle = zookeeper_init(connstr.c_str(), global_watcher, 30000, nullptr, nullptr, 0);
     if (nullptr == m_zhandle) 
     {
@@ -52,6 +54,7 @@ void ZkClient::Start()
 
     sem_t sem;
     sem_init(&sem, 0, 0);
+
     zoo_set_context(m_zhandle, &sem);  //为句柄添加额外信息
 
     sem_wait(&sem);
@@ -83,7 +86,7 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
 	}
 }
 
-// 根据指定的path，获取znode节点的值
+// 根据指定的path，获取znode节点的值 提供rpc服务器相关的信息
 std::string ZkClient::GetData(const char *path)
 {
     char buffer[64];

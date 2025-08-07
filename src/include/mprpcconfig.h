@@ -15,10 +15,11 @@ public:
     std::string Load(const std::string &key);
 private:
     std::unordered_map<std::string, std::string> m_configMap;  //记录配置文件中的对应关系
+    // zookeeperip=127.0.0.1  配置项键值对来存储
 
     // 去掉字符串前后的空格
     void Trim(std::string &src_buf);
 };
 
 
-// 配置文件只需要读取一次 
+// 配置文件只需要读取一次 不然浪费资源

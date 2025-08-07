@@ -21,6 +21,9 @@ void MprpcApplication::Init(int argc, char **argv)
 
     int c = 0;
     std::string config_file;  //有配置文件了
+
+    // 输入  ./program -i config.conf  
+    // optarg 指向config.conf  返回i
     while((c = getopt(argc, argv, "i:")) != -1)
     {
         switch (c)
@@ -28,10 +31,10 @@ void MprpcApplication::Init(int argc, char **argv)
         case 'i':
             config_file = optarg;
             break;
-        case '?':
+        case '?':  //出现不需要的参数
             ShowArgsHelp();
             exit(EXIT_FAILURE);
-        case ':':
+        case ':':  // 当选项需要参数但未提供时触发
             ShowArgsHelp();
             exit(EXIT_FAILURE);
         default:

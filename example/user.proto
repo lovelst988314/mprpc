@@ -35,7 +35,7 @@ message RegisterResponse
     bool sucess = 2;
 }
 
-service UserServiceRpc
+service UserServiceRpc  // 会生成两个类 UserServiceRpc 和 UserServiceRpc_Stub
 {
     rpc Login(LoginRequest) returns(LoginResponse);
     rpc Register(RegisterRequest) returns(RegisterResponse);

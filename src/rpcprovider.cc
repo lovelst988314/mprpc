@@ -29,7 +29,7 @@ void RpcProvider::NotifyService(google::protobuf::Service *service)
 
     for (int i=0; i < methodCnt; ++i)
     {
-        // 获取了服务对象指定下标的服务方法的描述（抽象描述） UserService   Login
+        // 获取了服务对象指定下标的服务方法的描述（抽象描述） UserService的   Login 
         const google::protobuf::MethodDescriptor* pmethodDesc = pserviceDesc->method(i);
         
         std::string method_name = pmethodDesc->name();
@@ -50,7 +50,7 @@ void RpcProvider::Run()
     muduo::net::InetAddress address(ip, port);
 
     // 创建TcpServer对象
-    muduo::net::TcpServer server(&m_eventLoop, address, "RpcProvider"); // evevnloop指针， 地址， 服务器名
+    muduo::net::TcpServer server(&m_eventLoop, address, "RpcProvider"); // evevnloop指针， 地址（ip 端口）， 服务器名
 
     // 绑定 连接回调 和 消息读写回调方法  分离了网络代码和业务代码
     server.setConnectionCallback(std::bind(&RpcProvider::OnConnection, this, std::placeholders::_1)); 
@@ -80,6 +80,7 @@ void RpcProvider::Run()
             zkCli.Create(method_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
         }
     }
+    // rpc提供服务方 根据mp表来创建zookeeper节点
 
     // rpc服务端准备启动，打印信息
     std::cout << "RpcProvider start service at ip:" << ip << " port:" << port << std::endl;
@@ -92,22 +93,25 @@ void RpcProvider::Run()
 // 新的socket连接回调
 void RpcProvider::OnConnection(const muduo::net::TcpConnectionPtr &conn)
 {
-    if (!conn->connected())
+    if (!conn->connected())  // 和rpc client的连接断开了
     {
-        // 和rpc client的连接断开了
         conn->shutdown();
     }
 }
 
 /*
 在框架内部，RpcProvider和RpcConsumer协商好之间通信用的protobuf数据类型
+
 service_name method_name args    定义proto的message类型，进行数据头的序列化和反序列化
                                  service_name method_name args_size
 16UserServiceLoginzhang san123456   
 
+参数的数据形式在request和response中 防止发生粘包记录参数的大小
+
 header_size(4个字节) + header_str + args_str
-10 "10"
-10000 "1000000"
+
+header_size(4个字节) 二进制来存储大小的
+
 std::string   insert和copy方法 
 */
 // 已建立连接用户的读写事件回调 如果远程有一个rpc服务的调用请求，那么OnMessage方法就会响应
@@ -122,7 +126,7 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn,
     uint32_t header_size = 0;
     recv_buf.copy((char*)&header_size, 4, 0);
     // size_type copy(char* s, size_type len, size_type pos = 0) const; 
-    // char* s - 目标字符数组的指针  size_type len - 要复制的字符数  size_type pos = 0 - 源字符串中的起始位置
+    // char* s - 目标字符数组的指针  size_type len - 要复制的字节数  size_type pos = 0 - 源字符串中的起始位置
 
     // 根据header_size读取数据头的原始字符流，反序列化数据，得到rpc请求的详细信息
     std::string rpc_header_str = recv_buf.substr(4, header_size);
@@ -178,7 +182,9 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn,
     const google::protobuf::MethodDescriptor *method = mit->second; // 获取method对象  Login
 
     // 生成rpc方法调用的请求request和响应response参数
+    // 产生具体某个服务对象 某个服务方法的 request 和 response对象
     google::protobuf::Message *request = service->GetRequestPrototype(method).New();
+
     if (!request->ParseFromString(args_str))   // 将字符串反序列化request对象
     {
         std::cout << "request parse error, content:" << args_str << std::endl;
@@ -188,14 +194,17 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn,
 
     // 给下面的method方法的调用，绑定一个Closure的回调函数
     google::protobuf::Closure *done = google::protobuf::NewCallback<RpcProvider, 
-                                                                    const muduo::net::TcpConnectionPtr&,    //注意名字空间作用域
+                                                                    const muduo::net::TcpConnectionPtr&,    
                                                                     google::protobuf::Message*>
                                                                     (this, 
                                                                     &RpcProvider::SendRpcResponse, 
                                                                     conn, response);
+                            //     inline Closure* NewCallback(Class* object, void (Class::*method)(Arg1, Arg2),
+                            // Arg1 arg1, Arg2 arg2)                                   
 
     // 在框架上根据远端rpc请求，调用当前rpc节点上发布的方法
     // new UserService().Login(controller, request, response, done)
+    //接受的数据解析到的服务来进行回调  （回调是将结果返回rpc服务的调用方）
     service->CallMethod(method, nullptr, request, response, done);
 }
 

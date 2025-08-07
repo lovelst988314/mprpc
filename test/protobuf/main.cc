@@ -3,7 +3,7 @@
 #include "test.pb.h"
 
 using namespace fixbug;
-using namespace std;
+
 
 
 int main()
@@ -18,16 +18,28 @@ int main()
     rc->set_errcode(0);
 
     User* user1 = rsp.add_friends_list();
-    user1->set_name("张三");
+    user1->set_name("张三");  // 设user的值
     user1->set_age(18);
     user1->set_sex(User::MALE);
 
     User* user2 = rsp.add_friends_list();
-    user1->set_name("li shi");
-    user1->set_age(20);
-    user1->set_sex(User::MALE);
+    user2->set_name("li shi");
+    user2->set_age(20);
+    user2->set_sex(User::MALE);
+    
+    std::cout << user2->name() << " " << user2->age() << " " << user2->sex() << std::endl;
 
-    cout << rsp.friends_list_size() << endl;
+    // std::cout << rsp.friends_list(1).age() << " " << rsp.friends_list(1).name() << std::endl;  //打印user2的 age和name
+    // std::cout << rsp.friends_list_size() << std::endl;
+
+    // // 序列化对象rsp 得到一个字符串
+    // std::string send_str;
+    // rsp.SerializeToString(&send_str);
+
+    // GETFriendListResponse rsp2;
+    // rsp2.ParseFromString(send_str);
+    // std::cout << rsp2.friends_list(1).age() << " " << rsp2.friends_list(1).name() << std::endl;
+    
 }
 
 // int main1()

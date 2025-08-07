@@ -22,12 +22,14 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                                 google::protobuf:: Closure* done)
 {
     const google::protobuf::ServiceDescriptor* sd = method->service();  //  这个方法对应的服务对象
-    std::string service_name = sd->name(); // service_name
-    std::string method_name = method->name(); // method_name
+    std::string service_name = sd->name();       // service_name
+    std::string method_name = method->name();    // method_name
 
     // 获取参数的序列化字符串长度 args_size
-    uint32_t args_size = 0;
-    std::string args_str;  // 用于存放request序列化的字符串
+    uint32_t args_size = 0;  
+    std::string args_str;  // 用于存放request序列化后的二进制数据
+
+    // 数据序列化
     if (request->SerializeToString(&args_str))
     {
         args_size = args_str.size();
@@ -45,7 +47,8 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     rpcHeader.set_args_size(args_size);
 
     uint32_t header_size = 0;
-    std::string rpc_header_str;
+
+    std::string rpc_header_str;  // 存储rpcHeader 序列化后的结果
     if (rpcHeader.SerializeToString(&rpc_header_str))
     {
         header_size = rpc_header_str.size();
@@ -59,8 +62,9 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     // 组织待发送的rpc请求的字符串
     std::string send_rpc_str;
     send_rpc_str.insert(0, std::string((char*)&header_size, 4)); // header_size
+    //  创建了一个包含4字节二进制数据的字符串 作为发送的头部
     send_rpc_str += rpc_header_str; // rpcheader
-    send_rpc_str += args_str; // args
+    send_rpc_str += args_str;       // args
 
     // 打印调试信息
     std::cout << "============================================" << std::endl;
@@ -103,9 +107,11 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
         controller->SetFailed(method_path + " address is invalid!");
         return;
     }
+    // 根据路径去在zookeeper服务器上找到对应路径的节点   获取ip和端口号
     std::string ip = host_data.substr(0, idx);
     uint16_t port = atoi(host_data.substr(idx+1, host_data.size()-idx).c_str()); 
 
+    //  分隔
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);

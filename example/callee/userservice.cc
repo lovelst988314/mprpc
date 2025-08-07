@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
-#include "user.pb.h"  // 要对虚函数来进行重写
+#include "user.pb.h"  
 #include "mprpcapplication.h"
 #include "rpcprovider.h"
+
+// 客服端  
 
 /*
 UserService原来是一个本地服务，提供了两个进程内的本地方法，Login和GetFriendLists
@@ -10,6 +12,8 @@ UserService原来是一个本地服务，提供了两个进程内的本地方法
 class UserService : public fixbug::UserServiceRpc // 使用在rpc服务发布端（rpc服务提供者）
 {
 public:
+
+    // 本地实现 Login 和 Register 
     bool Login(std::string name, std::string pwd)
     {
         std::cout << "doing local service: Login" << std::endl;
@@ -24,14 +28,14 @@ public:
         // 代表是一个业务
         return true;
     }
-
+ 
     /*
     重写基类UserServiceRpc的虚函数 下面这些方法都是框架直接调用的
     1. caller   ===>   Login(LoginRequest)  => muduo =>   callee 
     2. callee   ===>    Login(LoginRequest)  => 交到下面重写的这个Login方法上了
     */
     void Login(::google::protobuf::RpcController* controller,   
-                       const ::fixbug::LoginRequest* request,
+                       const ::fixbug::LoginRequest* request,  //rpc框架已经反序列化了
                        ::fixbug::LoginResponse* response,
                        ::google::protobuf::Closure* done)
     {
@@ -39,18 +43,22 @@ public:
         std::string name = request->name();
         std::string pwd = request->pwd();
 
-        // 做本地业务
+        // 做本地业务  调用本地业务
         bool login_result = Login(name, pwd); 
 
         // 把响应写入  包括错误码、错误消息、返回值
-        fixbug::ResultCode *code = response->mutable_result();
+        fixbug::ResultCode *code = response->mutable_result();  //
+
         code->set_errcode(0);
-        code->set_errmsg("login do wrong");
-        response->set_sucess(login_result);
+        code->set_errmsg("login do  no wrong");
+
+        response->set_sucess(login_result);  //将本地的返回值  设置为response的返回值
 
         // 执行回调操作   执行响应对象数据的序列化和网络发送（都是由框架来完成的）
-        done->Run();
+        done->Run();  //调用 rpcprovider 中的run 
     }
+
+    
 
     void Register(::google::protobuf::RpcController* controller,
                        const ::fixbug::RegisterRequest* request,
@@ -62,14 +70,27 @@ public:
         std::string pwd = request->pwd();
 
         bool ret = Register(id, name, pwd);
+        
+        fixbug::ResultCode *code = response->mutable_result();
 
-        response->mutable_result()->set_errcode(0);
-        response->mutable_result()->set_errmsg("");
-        response->set_sucess(ret);
+        code->set_errcode(0);
+        code->set_errmsg(" ");
+
+        response->set_sucess(ret); //将本地的返回值  设置为response的返回值
 
         done->Run();
     }
 };
+
+
+//  virtual void Login(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+//                        const ::fixbug::LoginRequest* request,
+//                        ::fixbug::LoginResponse* response,
+//                        ::google::protobuf::Closure* done);
+//  virtual void Register(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+//                        const ::fixbug::RegisterRequest* request,
+//                        ::fixbug::RegisterResponse* response,
+//                        ::google::protobuf::Closure* done);
 
 int main(int argc, char **argv)
 {
